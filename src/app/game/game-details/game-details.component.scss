@@ -1,0 +1,11 @@
+.sticky-content{
+  position: fixed;
+      top: 100px;
+      z-index: -1;
+}
+
+@media (max-width: 768px) {
+  .sticky-content {
+    padding: 5px;
+  }
+}

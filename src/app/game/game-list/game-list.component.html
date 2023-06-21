@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-xs-12">
+    <p style="text-align: center">
+      TASK: 1. Fix Toggle of Detail Button
+    </p>
+    <h1 style="text-align: center">Game List</h1>
+    <hr />
+    <div class="container col-xs-12 text-center">
+      <div *ngFor="let game of games; let i = index">
+        <app-game-item
+          [index]="i"
+          [game]="game"
+        ></app-game-item>
+      </div>
+    </div>
+  </div>
+</div>

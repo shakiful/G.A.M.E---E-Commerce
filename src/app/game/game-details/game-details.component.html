@@ -1,0 +1,19 @@
+<div class="sticky-content">
+  <div class="col-md-12 text-center">
+    <div class="card">
+      <img
+        style="max-height: 500px; max-width: 500px"
+        src="{{ gameSelected.image_url }}"
+        alt=" {{ gameSelected.name }} "
+        class="card-img-top"
+      />
+      <div class="card-body">
+        <h4 class="card-title">
+          <strong>{{ gameSelected.name }}</strong>
+        </h4>
+        <p class="card-text text-muted">{{ gameSelected.genre }}</p>
+        <p class="card-text">{{ gameSelected.description }}</p>
+      </div>
+    </div>
+  </div>
+</div>

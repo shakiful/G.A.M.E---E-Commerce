@@ -1,0 +1,47 @@
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <!-- Header -->
+    <div class="navbar-header">
+      <button
+        type="button"
+        class="navbar-toggle"
+        data-toggle="collapse"
+        data-target="#myNavbar"
+      >
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="navbar-brand" routerLinkActive="active">
+        <a routerLink="shop"
+          ><span class="glyphicon glyphicon-shopping-cart"></span> Shop</a
+        >
+      </ul>
+      <ul class="navbar-brand" routerLinkActive="active">
+        <a routerLink="my-cart"
+          ><span class="glyphicon glyphicon-briefcase"></span> Cart</a
+        >
+      </ul>
+      <ul class="navbar-brand" routerLinkActive="active">
+        <a routerLink="wishlist"
+          ><span class="glyphicon glyphicon-heart"></span> Wishlist</a
+        >
+      </ul>
+      <!-- dropdown -->
+      <ul class="navbar-brand navbar-right">
+        <div class="dropdown" appDropdownDirective>
+          <a style="cursor: pointer;" class="dropdown-toggle"
+            >Shortcut <span class="caret"></span
+          ></a>
+          <ul class="dropdown-menu">
+            <li style="cursor: pointer;"><a >Cancelled Orders</a></li>
+            <li style="cursor: pointer;"><a >Purchase History</a></li>
+          </ul>
+        </div>
+      </ul>
+    </div>
+  </div>
+</nav>

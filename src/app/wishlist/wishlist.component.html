@@ -1,0 +1,57 @@
+<div *ngIf="wishList && wishList.length < 1">
+  <h3 class="text-center">
+    Your Wishlist is Empty. <br />
+    Add games to wishlist to show your wishlist
+  </h3>
+</div>
+
+<div class="container" *ngIf="wishList && wishList.length > 0">
+  <h1 class="text-center">WISHLIST</h1>
+  <hr />
+  <div class="row">
+    <div class="col-md-12">
+      <div>
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr class="bg-primary text-white">
+              <th>Title</th>
+              <th>Image</th>
+              <th>Genre</th>
+              <th>Price</th>
+              <th>rating</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let game of wishList">
+              <td>{{ game.name }}</td>
+              <td>
+                <img
+                  style="max-height: 100px; max-width: 100px"
+                  src="{{ game.image_url }}"
+                  alt=" {{ game.name }} "
+                  class="card-img-top"
+                />
+              </td>
+              <td>{{ game.genre }}</td>
+              <td>{{ game.price | currency }}</td>
+              <td *ngIf="game.rating > 0">{{ game.rating }}</td>
+              <td *ngIf="game.rating == 0">No Rating Given Yet</td>
+              <td>
+                <div class="btn-group" appDropdownDirective>
+                  <button type="button" class="btn btn-primary dropdown-toggle">
+                    Manage Wishlist <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li style="cursor: pointer"><a>Add To Cart </a></li>
+                    <li style="cursor: pointer"><a>Delete From listing </a></li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

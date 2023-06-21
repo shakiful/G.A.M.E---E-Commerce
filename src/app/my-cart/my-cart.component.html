@@ -1,0 +1,55 @@
+<div *ngIf="cartList.length < 1">
+  <h3 class="text-center"> Your Cart is Empty. <br> Add games to the cart to show your cart list </h3>
+</div>
+
+<div class="container" *ngIf="cartList.length > 0">
+  <h1 class="text-center">Cart</h1>
+  <hr />
+  <div class="row">
+    <div class="col-md-12">
+      <div>
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr class="bg-primary text-white">
+              <th>Title</th>
+              <th>Image</th>
+              <th>Genre</th>
+              <th>Price</th>
+              <th>rating</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of cartList">
+              <td> {{item.name}} </td>
+              <td>
+                <img
+                  style="max-height: 100px; max-width: 100px"
+                  src= "{{item.image_url}} "
+                  alt=" {{item.name}} "
+                  class="card-img-top"
+                />
+              </td>
+              <td> {{item.genre}} </td>
+              <td> {{item.price | currency}} </td>
+              <td *ngIf="item.rating > 0"> {{item.rating}} </td>
+              <td *ngIf="item.rating == 0"> No Rating Given Yet </td>
+              <!-- <td >No Rating Given Yet</td> -->
+              <td>
+                <div class="btn-group" appDropdownDirective>
+                  <button type="button" class="btn btn-primary dropdown-toggle">
+                    Manage Wishlist <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li style="cursor: pointer;"><a >Proceed to Purchase </a></li>
+                    <li style="cursor: pointer;"><a > Delete From listing </a></li>
+                  </ul>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<div class="container col-xs-12 text-center">
+  <table class="table table-bordered table-striped table">
+    <thead>
+      <tr class="bg-primary text-white">
+        <th>Serial</th>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Genre</th>
+        <th>Price</th>
+        <th>Rating</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ index + 1 }}</td>
+        <td style="max-height: 250px; max-width: 250px">
+          <img src="{{ game.image_url }}" class="img-responsive" />
+        </td>
+        <td class="col-xs-3">{{ game.name }}</td>
+        <td>{{ game.genre }}</td>
+        <td>{{ game.price | currency }}</td>
+        <td *ngIf="game.rating > 0">{{ game.rating }}</td>
+        <td *ngIf="game.rating == 0">No Rating Given Yet</td>
+        <td style="padding: 10px">
+          <div class="center">
+            <button class="btn btn-sm btn-primary" style="margin:5px;" (click)="onCart()">Add To Cart</button>
+            <button class="btn btn-sm btn-info" (click)="onWishlist()">Add To Wishlist</button>
+            <button class="btn btn-sm btn-success" style="margin:5px;" (click)="onDetail()" [routerLink]="[index]">Details</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
