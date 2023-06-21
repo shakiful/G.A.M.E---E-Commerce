@@ -9,9 +9,8 @@ import { ActivatedRoute, Params } from '@angular/router';
   styleUrls: ['./game-details.component.scss'],
 })
 export class GameDetailsComponent implements OnInit {
-  @Input() gameSelected: Games;
-  @Input() index: number;
-
+  gameSelected: Games;
+  index: number;
 
   constructor(
     private gameService: GameService,
@@ -19,11 +18,9 @@ export class GameDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.route.params.subscribe((params: Params) => {
       this.index = +params['id'];
       this.gameSelected = this.gameService.getGame(this.index);
-
     });
   }
 }

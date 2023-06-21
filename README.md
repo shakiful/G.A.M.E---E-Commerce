@@ -1,5 +1,17 @@
 # G.A.M.E- E-commerce
 
+This is a website which allows users to buy and sell their digital game codes with others for less after buying it from the website store and using it for 5months. The seller can only sell the game codes once after buying the game.
+
+Features:
+1. Add to Wishlist functionality
+2. Add to Cart functionality
+3. Detail button to know more about the product
+4. Cancelled Orders List
+5. Purchased History List
+6. Enlist game code for sell
+7. Able to buy other's game code
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.3.
 
 ## Development server

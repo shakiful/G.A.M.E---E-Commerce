@@ -5,8 +5,6 @@ import { WishListService } from '../wishlist/wishlist.service';
 
 @Injectable()
 export class GameService {
-  selectedGame = new Subject<Games>();
-  storedSelectedGames = new Subject<Games[]>();
   // constructor(private wishlistService: WishListService) {}
 
   games: Games[] = [
@@ -60,10 +58,4 @@ export class GameService {
     return this.games[index];
   }
 
-  // wishListed(game: Games) {
-  //   this.selectedGame = this.game
-  //   console.log(this.game);
-  //   this.wishListedGames.push(this.game);
-  //   this.wishListGames.next(this.wishListedGames.slice());
-  // }
 }

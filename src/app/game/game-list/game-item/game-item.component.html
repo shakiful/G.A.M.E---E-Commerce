@@ -24,9 +24,24 @@
         <td *ngIf="game.rating == 0">No Rating Given Yet</td>
         <td style="padding: 10px">
           <div class="center">
-            <button class="btn btn-sm btn-primary" style="margin:5px;" (click)="onCart()">Add To Cart</button>
-            <button class="btn btn-sm btn-info" (click)="onWishlist()">Add To Wishlist</button>
-            <button class="btn btn-sm btn-success" style="margin:5px;" (click)="onDetail()" [routerLink]="[index]">Details</button>
+            <button
+              class="btn btn-sm btn-primary"
+              style="margin: 5px"
+              (click)="onCart()"
+            >
+              Add To Cart
+            </button>
+            <button class="btn btn-sm btn-info" (click)="onWishlist()">
+              Add To Wishlist
+            </button>
+            <button
+              class="btn btn-sm btn-success"
+              style="margin: 5px"
+              (click)="onDetail()"
+              [routerLink]="[index]"
+            >
+              Details
+            </button>
           </div>
         </td>
       </tr>
