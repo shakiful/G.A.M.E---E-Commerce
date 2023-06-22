@@ -1,9 +1,6 @@
 import {
   Component,
-  ViewChild,
-  AfterViewInit,
   OnInit,
-  Input,
 } from '@angular/core';
 import { Games } from './shared/game-info.model';
 import { GameItemComponent } from './game/game-list/game-item/game-item.component';
@@ -19,7 +16,6 @@ export class AppComponent implements OnInit {
   title = 'Game-Shop';
 
   constructor(private gameService: GameService) {}
-  
 
   ngOnInit(): void {}
 }

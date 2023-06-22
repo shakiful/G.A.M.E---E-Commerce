@@ -35,4 +35,5 @@ export class SellItemComponent implements OnInit {
   onSubmit() {
     this.sellService.addSellingGame(this.sellForm.value);
   }
+
 }
