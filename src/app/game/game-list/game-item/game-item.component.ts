@@ -30,8 +30,6 @@ export class GameItemComponent implements OnInit {
     // this.router.navigate(['/wishlist']);
   }
 
-  onDetail() {}
-
   onCart() {
     this.myCartService.addToCart(this.game)
     // this.router.navigate(['/my-cart']);

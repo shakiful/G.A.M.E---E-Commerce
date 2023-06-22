@@ -1,7 +1,5 @@
 import { Injectable} from '@angular/core';
 import { Games } from '../shared/game-info.model';
-import { Subject } from 'rxjs';
-import { WishListService } from '../wishlist/wishlist.service';
 
 @Injectable()
 export class GameService {

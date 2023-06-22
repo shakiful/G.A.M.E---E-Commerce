@@ -13,6 +13,9 @@ import { WishlistComponent } from './wishlist/wishlist.component';
 import { DropdownDirectiveDirective } from './shared/dropdown-directive.directive';
 import { GameService } from './game/game.service';
 import { WishListService } from './wishlist/wishlist.service';
+import { SellItemComponent } from './sell-item/sell-item.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SellListComponent } from './sell-item/sell-list/sell-list.component';
 
 @NgModule({
   declarations: [
@@ -24,11 +27,15 @@ import { WishListService } from './wishlist/wishlist.service';
     MyCartComponent,
     GameItemComponent,
     WishlistComponent,
-    DropdownDirectiveDirective
+    DropdownDirectiveDirective,
+    SellItemComponent,
+    SellListComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [GameService, WishListService],
   bootstrap: [AppComponent]
