@@ -1,4 +1,4 @@
-import { Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Games } from '../shared/game-info.model';
 import { Subject } from 'rxjs';
 import { WishListService } from '../wishlist/wishlist.service';
@@ -27,13 +27,22 @@ export class GameService {
       rating: 4.5,
       description:
         'The story is set in a fictionalized representation of the United States in 1899 and follows the exploits of outlaw Arthur Morgan, a member of the Van der Linde gang, who must deal with the decline of the Wild West whilst attempting to survive against government forces, rival gangs, and other adversaries.',
+    }, {
+      name: 'The Witcher 3: Wild Hunt',
+      price: 39.99,
+      genre: 'Action RPG',
+      image_url:
+        'https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/Witcher_3_cover_art.jpg/220px-Witcher_3_cover_art.jpg',
+      rating: 4.7,
+      description:
+        'A story-driven, open world adventure set in a dark fantasy universe.',
     },
     {
       name: 'Spider-Man 2',
       price: 59.99,
       genre: 'Action-adventure',
       image_url:
-      'https://i0.wp.com/thefutureoftheforce.com/wp-content/uploads/2021/09/Insomniac-Games-Spider-Man-2-Announced.jpg?fit=1934%2C1094&ssl=1',
+        'https://i0.wp.com/thefutureoftheforce.com/wp-content/uploads/2021/09/Insomniac-Games-Spider-Man-2-Announced.jpg?fit=1934%2C1094&ssl=1',
       rating: 5,
       description:
         "Marvel's Spider-Man 2 is an upcoming action-adventure game developed by Insomniac Games and published by Sony Interactive Entertainment. Based on the Marvel Comics character Spider-Man, it features a narrative inspired by the long-running comic book mythology while also deriving from various adaptations in other media.",
@@ -43,7 +52,7 @@ export class GameService {
       price: 59.99,
       genre: 'Action-adventure',
       image_url:
-      'https://cdn.ndtv.com/tech/gadgets/uc_4_thiefs_end.jpg',
+        'https://cdn.ndtv.com/tech/gadgets/uc_4_thiefs_end.jpg',
       rating: 0,
       description:
         "UNCHARTED 4: A Thief's End takes players on a journey around the globe, through jungle isles, far-flung cities and snow-capped peaks on the search for Avery’s fortune.",
@@ -54,7 +63,7 @@ export class GameService {
     return this.games;
   }
 
-  getGame(index: number){
+  getGame(index: number) {
     return this.games[index];
   }
 
