@@ -14,6 +14,7 @@ import { DropdownDirectiveDirective } from './shared/dropdown-directive.directiv
 import { GameService } from './game/game.service';
 import { WishListService } from './wishlist/wishlist.service';
 import { ToastComponent } from './shared/toast.component';
+import { ConfirmationModalComponent } from './shared/confirmation-modal.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ToastComponent } from './shared/toast.component';
     GameItemComponent,
     WishlistComponent,
     DropdownDirectiveDirective,
-    ToastComponent
+    ToastComponent,
+    ConfirmationModalComponent
   ],
   imports: [
     BrowserModule,

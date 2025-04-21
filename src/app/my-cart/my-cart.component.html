@@ -37,4 +37,11 @@
       </a>
     </div>
   </ng-template>
+
+  <!-- Confirmation Modal -->
+  <app-confirmation-modal 
+    *ngIf="showConfirmationModal" 
+    [message]="'Are you sure you want to remove ' + (gameToRemove ? gameToRemove.name : '') + ' from the cart?'"
+    (confirmed)="onConfirmRemove($event)">
+  </app-confirmation-modal>
 </div>

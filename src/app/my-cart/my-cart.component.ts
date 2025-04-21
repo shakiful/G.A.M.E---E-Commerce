@@ -11,6 +11,8 @@ import { MyCartService } from './my-cart.service';
 export class MyCartComponent implements OnInit, OnDestroy {
   cartList: Games[] = []; // Initialize with an empty array
   private cartSubscription: Subscription | undefined;
+  showConfirmationModal = false;
+  gameToRemove: Games | null = null;
 
   constructor(private myCartService: MyCartService) {}
 
@@ -32,9 +34,15 @@ export class MyCartComponent implements OnInit, OnDestroy {
   }
 
   removeFromCart(gameToRemove: Games): void {
-    if (confirm(`Are you sure you want to remove ${gameToRemove.name} from the cart?`)) {
-      this.myCartService.removeFromCart(gameToRemove);
-      // The subscription above will automatically update the cartList
+    this.gameToRemove = gameToRemove;
+    this.showConfirmationModal = true;
+  }
+
+  onConfirmRemove(confirmed: boolean): void {
+    this.showConfirmationModal = false;
+    if (confirmed && this.gameToRemove) {
+      this.myCartService.removeFromCart(this.gameToRemove);
+      this.gameToRemove = null;
     }
   }
 }
