@@ -1,6 +1,7 @@
 import { BehaviorSubject, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Games } from '../shared/game-info.model';
+import { ToastService } from '../shared/toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,15 +14,17 @@ export class MyCartService {
   // Observable for components to subscribe to the count
   cartItemCount$ = this.cartItemCount.asObservable();
 
+  constructor(private toastService: ToastService) {}
+
   addToCart(game: Games) {
     const exists = this.gameCart.some(g => g.name === game.name); // Check by a unique property like name or id
     if (!exists) {
-      alert('Game Added to Cart');
+      this.toastService.show('Game Added to Cart', 'success');
       this.gameCart.push(game);
       this.listedCart.next(this.gameCart.slice());
       this.cartItemCount.next(this.gameCart.length); // Update count
     } else {
-      alert('Game already in cart');
+      this.toastService.show('Game already in cart', 'info');
     }
   }
 
@@ -41,7 +44,7 @@ export class MyCartService {
     if (this.gameCart.length < initialLength) {
       this.listedCart.next(this.gameCart.slice());
       this.cartItemCount.next(this.gameCart.length); // Update count
-      alert('Game removed from cart');
+      this.toastService.show('Game removed from cart', 'success');
     }
   }
 }

@@ -13,6 +13,7 @@ import { WishlistComponent } from './wishlist/wishlist.component';
 import { DropdownDirectiveDirective } from './shared/dropdown-directive.directive';
 import { GameService } from './game/game.service';
 import { WishListService } from './wishlist/wishlist.service';
+import { ToastComponent } from './shared/toast.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { WishListService } from './wishlist/wishlist.service';
     MyCartComponent,
     GameItemComponent,
     WishlistComponent,
-    DropdownDirectiveDirective
+    DropdownDirectiveDirective,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
