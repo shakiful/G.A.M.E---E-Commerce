@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -15,6 +14,12 @@ import { GameService } from './game/game.service';
 import { WishListService } from './wishlist/wishlist.service';
 import { ToastComponent } from './shared/toast.component';
 import { ConfirmationModalComponent } from './shared/confirmation-modal.component';
+import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+import { environment } from '../environments/environment';
+import { provideAuth,getAuth } from '@angular/fire/auth';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -28,11 +33,16 @@ import { ConfirmationModalComponent } from './shared/confirmation-modal.componen
     WishlistComponent,
     DropdownDirectiveDirective,
     ToastComponent,
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    provideAuth(() => getAuth()),
+    FormsModule
   ],
   providers: [GameService, WishListService],
   bootstrap: [AppComponent]

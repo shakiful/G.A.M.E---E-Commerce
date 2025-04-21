@@ -7,15 +7,32 @@ import {
 
 @Directive({
   selector: '[appDropdownDirective]',
+  exportAs: 'appDropdownDirective' // Export the directive with this name
 })
 export class DropdownDirectiveDirective {
-  @HostBinding('class.open') isOpen = false;
+  @HostBinding('class.open') @HostBinding('attr.aria-expanded') isOpen = false;
 
-  @HostListener('document:click', ['$event']) toggleOpen(event: Event) {
-    this.isOpen = this.elRef.nativeElement.contains(event.target)
-      ? !this.isOpen
-      : false;
+  // Close dropdown if clicked outside
+  @HostListener('document:click', ['$event']) clickOutside(event: Event) {
+    if (!this.elRef.nativeElement.contains(event.target)) {
+      this.close();
+    }
   }
 
   constructor(private elRef: ElementRef) {}
+
+  // Method to toggle the dropdown
+  toggle(): void {
+    this.isOpen = !this.isOpen;
+  }
+
+  // Method to open the dropdown
+  open(): void {
+    this.isOpen = true;
+  }
+
+  // Method to close the dropdown
+  close(): void {
+    this.isOpen = false;
+  }
 }

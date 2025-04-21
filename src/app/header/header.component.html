@@ -1,47 +1,51 @@
-<nav class="navbar navbar-inverse">
-  <div class="container-fluid">
-    <!-- Header -->
-    <div class="navbar-header">
-      <button
-        type="button"
-        class="navbar-toggle"
-        data-toggle="collapse"
-        data-target="#myNavbar"
-      >
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-    </div>
-
-    <!-- Sidebar -->
-    <div class="collapse navbar-collapse" id="myNavbar">
-      <ul class="navbar-brand" routerLinkActive="active">
-        <a routerLink="shop"
-          ><span class="glyphicon glyphicon-shopping-cart"></span> Shop</a
-        >
-      </ul>
-      <ul class="navbar-brand" routerLinkActive="active">
-        <a routerLink="my-cart"
-          ><span class="glyphicon glyphicon-briefcase"></span> Cart</a
-        >
-      </ul>
-      <ul class="navbar-brand" routerLinkActive="active">
-        <a routerLink="wishlist"
-          ><span class="glyphicon glyphicon-heart"></span> Wishlist</a
-        >
-      </ul>
-      <!-- dropdown -->
-      <ul class="navbar-brand navbar-right">
-        <div class="dropdown" appDropdownDirective>
-          <a style="cursor: pointer;" class="dropdown-toggle"
-            >Shortcut <span class="caret"></span
-          ></a>
-          <ul class="dropdown-menu">
-            <li style="cursor: pointer;"><a >Cancelled Orders</a></li>
-            <li style="cursor: pointer;"><a >Purchase History</a></li>
-          </ul>
+<nav class="bg-gray-900 py-4 shadow-md">
+    <div class="container mx-auto px-6 flex items-center justify-between flex-wrap">
+        <!-- Logo -->
+        <div class="text-white font-semibold text-xl">
+            <a routerLink="/" class="hover:text-gray-200">GameStore</a>
         </div>
-      </ul>
+
+        <!-- Mobile Menu Toggle -->
+        <button id="mobile-menu-button" class="md:hidden text-white focus:outline-none">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+        </button>
+
+        <!-- Navigation Links -->
+        <div id="mobile-menu" class="w-full md:w-auto md:flex md:items-center">
+            <ul class="md:flex md:items-center md:space-x-6 text-center">
+                <li>
+                    <a routerLink="shop" routerLinkActive="text-blue-400" class="block md:inline-block py-2 px-4 text-gray-300 hover:text-white">
+                        <span class="mr-1"><i class="glyphicon glyphicon-shopping-cart"></i></span>Shop
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="my-cart" routerLinkActive="text-blue-400" class="block md:inline-block py-2 px-4 text-gray-300 hover:text-white">
+                        <span class="mr-1"><i class="glyphicon glyphicon-briefcase"></i></span>Cart
+                        <span *ngIf="cartItemCount > 0" class="ml-1 text-sm">({{cartItemCount}})</span>
+                    </a>
+                </li>
+                <li>
+                    <a routerLink="wishlist" routerLinkActive="text-blue-400" class="block md:inline-block py-2 px-4 text-gray-300 hover:text-white">
+                        <span class="mr-1"><i class="glyphicon glyphicon-heart"></i></span>Wishlist
+                    </a>
+                </li>
+                <!-- Login/Logout Buttons -->
+                <li *ngIf="!isAuthenticated">
+                    <a routerLink="/login" class="block md:inline-block py-2 px-4 text-gray-300 hover:text-white">Login</a>
+                </li>
+                <li *ngIf="isAuthenticated">
+                    <button (click)="logout()" class="bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Logout</button>
+                </li>
+                 <!-- User Email -->
+                 <li *ngIf="isAuthenticated" class="text-gray-300">user_name</li>
+            </ul>
+        </div>
     </div>
-  </div>
+    <script>
+        document.getElementById('mobile-menu-button').addEventListener('click', function () {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
 </nav>
