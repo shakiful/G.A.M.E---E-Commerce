@@ -7,10 +7,12 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   cartItemCount: number = 0;
   isAuthenticated: boolean = false;
+  username: string | null = null;
   private cartCountSubscription: Subscription | undefined;
   private authSubscription: Subscription | undefined;
 
@@ -23,6 +25,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.authSubscription = this.authService.authState$.subscribe(user => {
       this.isAuthenticated = !!user;
+      this.username = this.authService.getUsername();
     });
   }
   logout(){

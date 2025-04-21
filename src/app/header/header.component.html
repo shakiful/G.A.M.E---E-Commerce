@@ -35,11 +35,11 @@
                 <li *ngIf="!isAuthenticated">
                     <a routerLink="/login" class="block md:inline-block py-2 px-4 text-gray-300 hover:text-white">Login</a>
                 </li>
-                <li *ngIf="isAuthenticated">
+                 <!-- User Name -->
+                 <li *ngIf="isAuthenticated" class="text-gray-300">{{username}}</li>
+                 <li *ngIf="isAuthenticated">
                     <button (click)="logout()" class="bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Logout</button>
                 </li>
-                 <!-- User Email -->
-                 <li *ngIf="isAuthenticated" class="text-gray-300">user_name</li>
             </ul>
         </div>
     </div>
