@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class AuthService {
       return user;
     } catch (error) {
       console.error(error);
-      return null;
+      throw error;
     }
   }
 
@@ -28,23 +28,33 @@ export class AuthService {
       return user;
     } catch (error) {
       console.error(error);
-      return null;
+      throw error;
     }
   }
 
   async logout() {
+    await signOut(this.auth);
+  }
+
+  async googleSignIn() {
+    const provider = new GoogleAuthProvider();
     try {
-      await signOut(this.auth);
+      const result = await signInWithPopup(this.auth, provider);
+      return result;
     } catch (error) {
       console.error(error);
+      throw error;
     }
   }
 
-  isAuthenticated(): boolean {
-    return this.auth.currentUser !== null;
-  }
-
-  getCurrentUser() {
-    return this.auth.currentUser;
+  async googleSignUp() {
+    const provider = new GoogleAuthProvider();
+    try {
+      const result = await signInWithPopup(this.auth, provider);
+      return result;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 }
