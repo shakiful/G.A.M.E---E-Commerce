@@ -1,19 +1,10 @@
-<div class="row">
-  <div class="col-xs-12">
-    <p style="text-align: center">
-      TASK: 1. Fix Toggle of Detail Button <br>
-            2. Implement Form Concept <br>
-            3. Implement Http Concept and retrieve it from firebase
-    </p>
-    <h1 style="text-align: center">Game List</h1>
-    <hr />
-    <div class="container col-xs-12 text-center">
-      <div *ngFor="let game of games; let i = index">
-        <app-game-item
-          [index]="i"
-          [game]="game"
-        ></app-game-item>
-      </div>
-    </div>
+<div class="container mx-auto py-8 px-4">
+  <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">Game List</h1>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <app-game-item
+      *ngFor="let game of games; let i = index"
+      [index]="i"
+      [game]="game"
+    ></app-game-item>
   </div>
 </div>
