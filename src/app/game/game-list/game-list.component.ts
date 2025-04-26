@@ -1,6 +1,6 @@
-import { Component, Input, EventEmitter, Output, OnInit } from '@angular/core';
-import { Games } from 'src/app/shared/game-info.model';
+import { Component, OnInit } from '@angular/core';
 import { GameService } from '../game.service';
+import { Games } from '../../shared/game-info.model';
 
 @Component({
   selector: 'app-game-list',
@@ -8,12 +8,15 @@ import { GameService } from '../game.service';
   styleUrls: ['./game-list.component.scss'],
 })
 export class GameListComponent implements OnInit {
-  games: Games[];
+  games: Games[] = [];
 
   constructor(private gameService: GameService) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.gameService.fetchGames();
     this.games = this.gameService.getGames();
+    this.gameService.gamesChanged.subscribe((games: Games[]) => {
+      this.games = games;
+    });
   }
-
 }
