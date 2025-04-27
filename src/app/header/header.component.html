@@ -26,11 +26,17 @@
                         <span *ngIf="cartItemCount > 0" class="ml-1 text-sm">({{cartItemCount}})</span>
                     </a>
                 </li>
-                <li>
-                    <a routerLink="wishlist" routerLinkActive="text-blue-400" class="block md:inline-block py-2 px-4 text-gray-300 hover:text-white">
-                        <span class="mr-1"><i class="glyphicon glyphicon-heart"></i></span>Wishlist
+                  <li *ngIf="isAuthenticated">
+                    <a routerLink="/payment-history" routerLinkActive="text-blue-400" class="block md:inline-block py-2 px-4 text-gray-300 hover:text-white">
+                        Payment History
                     </a>
                 </li>
+                 <li *ngIf="isAuthenticated">
+                    <a routerLink="/library" routerLinkActive="text-blue-400" class="block md:inline-block py-2 px-4 text-gray-300 hover:text-white">
+                       Library
+                    </a>
+                </li>
+
                 <!-- Login/Logout Buttons -->
                 <li *ngIf="!isAuthenticated">
                     <a routerLink="/login" class="block md:inline-block py-2 px-4 text-gray-300 hover:text-white">Login</a>

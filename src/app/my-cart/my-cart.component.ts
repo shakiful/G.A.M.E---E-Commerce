@@ -5,6 +5,7 @@ import { MyCartService } from './my-cart.service';
 import { AuthService } from '../shared/auth.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastService } from '../shared/toast.service';
+import { SupabaseService } from '../shared/supabase.service';
 
 @Component({
   selector: 'app-my-cart',
@@ -28,7 +29,7 @@ export class MyCartComponent implements OnInit, OnDestroy {
   paypalEmail = '';
   paypalPassword = '';
 
-  constructor(private myCartService: MyCartService, private authService: AuthService, private router: Router, private route: ActivatedRoute, private toastService: ToastService) {}
+  constructor(private myCartService: MyCartService, private authService: AuthService, private router: Router, private route: ActivatedRoute, private toastService: ToastService, private supabaseService: SupabaseService) {}
 
   ngOnInit(): void {
     // Get initial list
@@ -74,36 +75,156 @@ export class MyCartComponent implements OnInit, OnDestroy {
     }
   }
 
-  processCreditCardPayment() {
+  async processCreditCardPayment() {
     // Simulate credit card processing
     if (!this.validateCreditCard()) {
       return;
     }
 
-    console.log(`Processing credit card payment with card number: ${this.creditCard.cardNumber}`);
-    this.showPaymentModal = false;
-    this.showCreditCardForm = false;
-    this.myCartService.clearCart();
-    this.toastService.show('Payment Successful!', 'success');
-    // Reset credit card info
-    this.creditCard = {
-      cardNumber: '',
-      expiryDate: '',
-      cvv: ''
-    };
+    const user = await this.authService.isAuthenticatedUser();
+
+    if (user) {
+      try {
+        const supabase = this.supabaseService.getClient();
+        // Loop through cart items and save each to payment history and user library
+        for (const game of this.cartList) {
+          // Save to payment history
+          const { data: paymentData, error: paymentError } = await supabase
+            .from('payment_history')
+            .insert([{
+              user_id: user.id,
+              game_id: game.id,  // Use the actual game ID
+              payment_date: new Date(),
+              amount: game.price // Use the price of the individual game
+            }]);
+
+          if (paymentError) {
+            console.error('Error saving payment history for game:', game.name, paymentError);
+            this.toastService.show(`Error saving payment history for ${game.name}`, 'error');
+            return;
+          }
+
+          // Check if game is already in user library
+          const { data: existingLibraryData, error: existingLibraryError } = await supabase
+            .from('user_library')
+            .select('*')
+            .eq('user_id', user.id)
+            .eq('game_id', game.id);
+
+          if (existingLibraryError) {
+            console.error('Error checking user library:', existingLibraryError);
+            this.toastService.show('Error checking user library', 'error');
+            return;
+          }
+
+          if (existingLibraryData && existingLibraryData.length === 0) {
+            // Add game to user library only if it's not already there
+            const { data: libraryData, error: libraryError } = await supabase
+              .from('user_library')
+              .insert([{
+                user_id: user.id,
+                game_id: game.id
+              }]);
+
+            if (libraryError) {
+              console.error('Error adding game to user library:', game.name, libraryError);
+              this.toastService.show(`Error adding game to user library for ${game.name}`, 'error');
+              return;
+            }
+          }
+        }
+
+        console.log(`Processing credit card payment with card number: ${this.creditCard.cardNumber}`);
+        this.showPaymentModal = false;
+        this.showCreditCardForm = false;
+        this.myCartService.clearCart();
+        this.toastService.show('Payment Successful!', 'success');
+        // Reset credit card info
+        this.creditCard = {
+          cardNumber: '',
+          expiryDate: '',
+          cvv: ''
+        };
+      } catch (e) {
+         console.error('Unexpected error processing payment:', e);
+      }
+    }else{
+      this.toastService.show('Error saving payment history', 'error');
+    }
   }
 
-  processPayPalPayment() {
+  async processPayPalPayment() {
     // Simulate PayPal authorization
     if (!this.validatePayPal()) {
       return;
     }
+    const user = await this.authService.isAuthenticatedUser();
+
+    if (user) {
+      try {
+        const supabase = this.supabaseService.getClient();
+
+         // Loop through cart items and save each to payment history and user library
+         for (const game of this.cartList) {
+           // Save to payment history
+          const { data: paymentData, error: paymentError } = await supabase
+            .from('payment_history')
+            .insert([{
+              user_id: user.id,
+              game_id: game.id,
+              payment_date: new Date(),
+              amount: game.price
+            }]);
+
+          if (paymentError) {
+            console.error('Error saving payment history for game:', game.name, paymentError);
+            this.toastService.show(`Error saving payment history for ${game.name}`, 'error');
+            return;
+          }
+
+           // Check if game is already in user library
+           const { data: existingLibraryData, error: existingLibraryError } = await supabase
+            .from('user_library')
+            .select('*')
+            .eq('user_id', user.id)
+            .eq('game_id', game.id);
+
+          if (existingLibraryError) {
+            console.error('Error checking user library:', existingLibraryError);
+            this.toastService.show('Error checking user library', 'error');
+            return;
+          }
+
+          if (existingLibraryData && existingLibraryData.length === 0) {
+            // Add game to user library only if it's not already there
+            const { data: libraryData, error: libraryError } = await supabase
+              .from('user_library')
+              .insert([{
+                user_id: user.id,
+                game_id: game.id
+              }]);
+
+            if (libraryError) {
+              console.error('Error adding game to user library:', game.name, libraryError);
+              this.toastService.show(`Error adding game to user library for ${game.name}`, 'error');
+              return;
+            }
+          }
+        }
+
     console.log('Simulating PayPal authorization...');
     this.showPaymentModal = false;
     this.showCreditCardForm = false; // Ensure credit card form is closed
     this.showPayPalForm = false;
     this.myCartService.clearCart();
     this.toastService.show('Payment Successful (via PayPal)!', 'success');
+
+      } catch (e) {
+         console.error('Unexpected error processing payment:', e);
+      }
+    }else{
+      this.toastService.show('Error saving payment history', 'error');
+    }
   }
 
   validateCreditCard(): boolean {

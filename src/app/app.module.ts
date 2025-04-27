@@ -8,10 +8,8 @@ import { GameListComponent } from './game/game-list/game-list.component';
 import { GameDetailsComponent } from './game/game-details/game-details.component';
 import { MyCartComponent } from './my-cart/my-cart.component';
 import { GameItemComponent } from './game/game-list/game-item/game-item.component';
-import { WishlistComponent } from './wishlist/wishlist.component';
 import { DropdownDirectiveDirective } from './shared/dropdown-directive.directive';
 import { GameService } from './game/game.service';
-import { WishListService } from './wishlist/wishlist.service';
 import { ToastComponent } from './shared/toast.component';
 import { ConfirmationModalComponent } from './shared/confirmation-modal.component';
 import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
@@ -20,6 +18,8 @@ import { provideAuth,getAuth } from '@angular/fire/auth';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { FormsModule } from '@angular/forms';
+import { PaymentHistoryComponent } from './payment-history/payment-history.component';
+import { LibraryComponent } from './library/library.component';
 
 @NgModule({
   declarations: [
@@ -30,19 +30,20 @@ import { FormsModule } from '@angular/forms';
     GameDetailsComponent,
     MyCartComponent,
     GameItemComponent,
-    WishlistComponent,
     DropdownDirectiveDirective,
     ToastComponent,
     ConfirmationModalComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    PaymentHistoryComponent,
+    LibraryComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule
   ],
-  providers: [GameService, WishListService],
+  providers: [GameService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

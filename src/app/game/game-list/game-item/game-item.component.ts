@@ -3,7 +3,8 @@ import { Component, Input, OnInit, Injectable } from '@angular/core';
 import { Games } from 'src/app/shared/game-info.model';
 import { GameService } from '../../game.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { WishListService } from 'src/app/wishlist/wishlist.service';
+import { AuthService } from 'src/app/shared/auth.service';
+import { SupabaseService } from 'src/app/shared/supabase.service';
 
 @Injectable()
 @Component({
@@ -14,26 +15,44 @@ import { WishListService } from 'src/app/wishlist/wishlist.service';
 export class GameItemComponent implements OnInit {
   @Input() game: Games;
   @Input() index: number;
-  @Input() wishListedGame: Games[];
-  ngOnInit(): void {}
+  isOwned = false;
 
   constructor(
-    private wishlistService: WishListService,
     private myCartService: MyCartService,
     private gameService: GameService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    private supabaseService: SupabaseService
   ) {}
 
-  onWishlist() {
-    this.wishlistService.addToWishList(this.game);
-    // this.router.navigate(['/wishlist']);
+  async ngOnInit(): Promise<void> {
+    const user = await this.authService.isAuthenticatedUser();
+    if (user) {
+      try {
+        const supabase = this.supabaseService.getClient();
+        const { data, error } = await supabase
+          .from('user_library')
+          .select('*')
+          .eq('user_id', user.id)
+          .eq('game_id', this.game.id);
+
+        if (error) {
+          console.error('Error fetching user library:', error);
+          return;
+        }
+
+        this.isOwned = data && data.length > 0;
+      } catch (error) {
+        console.error('Error fetching user library:', error);
+      }
+    }
   }
-
-  onDetail() {}
-
-  onCart() {
-    this.myCartService.addToCart(this.game)
-    // this.router.navigate(['/my-cart']);
+  onCart(event: Event) {
+    event.stopPropagation(); // Prevent the parent div's click event from firing
+    this.myCartService.addToCart(this.game);
+  }
+  goToDetailsPage(){
+    this.router.navigate([this.index], {relativeTo: this.route});
   }
 }
