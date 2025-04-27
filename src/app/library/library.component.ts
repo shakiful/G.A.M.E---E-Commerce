@@ -14,11 +14,13 @@ interface UserLibraryItem {
   styleUrls: ['./library.component.scss']
 })
 export class LibraryComponent implements OnInit {
-  ownedGames: Games[] = [];
+  ownedGames: any[] = [];
+  loading = false;
 
   constructor(private authService: AuthService, private supabaseService: SupabaseService, private toastService: ToastService) { }
 
   async ngOnInit(): Promise<void> {
+    this.loading = true;
     const user = await this.authService.isAuthenticatedUser();
     if (user) {
       try {
@@ -26,22 +28,26 @@ export class LibraryComponent implements OnInit {
         const { data, error } = await supabase
           .from('user_library')
           .select('games(*)')
-          .eq('user_id', user.id)
-
+          .eq('user_id', user.id);
+        console.log('LibraryComponent: Raw Supabase data:', data);
         if (error) {
           console.error('Error fetching user library:', error);
           this.toastService.show('Error fetching user library', 'error');
-          return;
         }
 
         if (data) {
-          this.ownedGames = data.map((item: UserLibraryItem) => item.games[0]).filter(game => game !== undefined);
+          this.ownedGames = data.map(item => item.games).filter(game => game);
         }
 
       } catch (error) {
         console.error('Error fetching user library:', error);
         this.toastService.show('Unexpected error fetching user library', 'error');
+      } finally {
+        this.loading = false;
       }
+
+      console.log(this.ownedGames);
     }
   }
+
 }

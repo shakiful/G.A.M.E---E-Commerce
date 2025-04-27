@@ -21,10 +21,12 @@ interface Payment {
 })
 export class PaymentHistoryComponent implements OnInit {
   paymentHistory: Payment[] = [];
+  loading = false;
 
   constructor(private authService: AuthService, private supabaseService: SupabaseService, private toastService: ToastService) { }
 
   async ngOnInit(): Promise<void> {
+    this.loading = true;
     const user = await this.authService.isAuthenticatedUser();
     if (user) {
       try {
@@ -38,6 +40,7 @@ export class PaymentHistoryComponent implements OnInit {
         if (error) {
           console.error('Error fetching payment history:', error);
           this.toastService.show('Error fetching payment history', 'error');
+          this.loading = false;
           return;
         }
 
@@ -50,13 +53,13 @@ export class PaymentHistoryComponent implements OnInit {
           image_url: payment.games[0]?.image_url ?? '',
           games:payment.games
         }));
-
-        console.log(this.paymentHistory);
+        this.loading = false;
         
 
       } catch (error) {
         console.error('Error fetching payment history:', error);
         this.toastService.show('Unexpected error fetching payment history', 'error');
+        this.loading = false;
       }
     }
   }

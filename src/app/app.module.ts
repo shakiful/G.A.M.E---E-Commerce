@@ -20,6 +20,7 @@ import { RegisterComponent } from './register/register.component';
 import { FormsModule } from '@angular/forms';
 import { PaymentHistoryComponent } from './payment-history/payment-history.component';
 import { LibraryComponent } from './library/library.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { LibraryComponent } from './library/library.component';
     LoginComponent,
     RegisterComponent,
     PaymentHistoryComponent,
-    LibraryComponent
+    LibraryComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
