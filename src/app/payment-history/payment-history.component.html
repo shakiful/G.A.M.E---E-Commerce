@@ -13,8 +13,8 @@
       </thead>
       <tbody>
         <tr *ngFor="let payment of paymentHistory" class="border-b">
-          <td class="px-4 py-2">{{ payment?.name }}</td>
-           <td class="px-4 py-2"><img class="w-20 h-20 object-cover" [src]="payment?.image_url" [alt]="payment?.name"></td>
+          <td class="px-4 py-2">{{ payment?.games['name'] }}</td>
+           <td class="px-4 py-2"><img class="w-20 h-20 object-cover" [src]="payment?.games?.['image_url']" [alt]="payment?.name"></td>
           <td class="px-4 py-2">{{ payment?.payment_date | date }}</td>
           <td class="px-4 py-2">{{ payment?.amount | currency }}</td>
         </tr>

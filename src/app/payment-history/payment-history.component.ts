@@ -51,6 +51,9 @@ export class PaymentHistoryComponent implements OnInit {
           games:payment.games
         }));
 
+        console.log(this.paymentHistory);
+        
+
       } catch (error) {
         console.error('Error fetching payment history:', error);
         this.toastService.show('Unexpected error fetching payment history', 'error');
