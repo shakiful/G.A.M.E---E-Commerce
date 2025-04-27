@@ -2,6 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Games } from '../shared/game-info.model';
 import { MyCartService } from './my-cart.service';
+import { AuthService } from '../shared/auth.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ToastService } from '../shared/toast.service';
 
 @Component({
   selector: 'app-my-cart',
@@ -12,9 +15,10 @@ export class MyCartComponent implements OnInit, OnDestroy {
   cartList: Games[] = []; // Initialize with an empty array
   private cartSubscription: Subscription | undefined;
   showConfirmationModal = false;
+  showPaymentModal = false;
   gameToRemove: Games | null = null;
 
-  constructor(private myCartService: MyCartService) {}
+  constructor(private myCartService: MyCartService, private authService: AuthService, private router: Router, private route: ActivatedRoute, private toastService: ToastService) {}
 
   ngOnInit(): void {
     // Get initial list
@@ -26,6 +30,9 @@ export class MyCartComponent implements OnInit, OnDestroy {
         this.cartList = updatedCart;
       }
     );
+
+    // Load cart for user on component initialization
+    this.myCartService.loadCartForUser();
   }
 
   ngOnDestroy(): void {
@@ -44,5 +51,29 @@ export class MyCartComponent implements OnInit, OnDestroy {
       this.myCartService.removeFromCart(this.gameToRemove);
       this.gameToRemove = null;
     }
+  }
+
+  async checkout(){
+    const user = await this.authService.isAuthenticatedUser();
+    if(user){
+      // User is logged in, show dummy payment options
+      this.showPaymentModal = true;
+    } else {
+      // User is not logged in, redirect to login page with returnUrl
+      this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+    }
+  }
+
+  processDummyPayment(method: string){
+    console.log(`Processing dummy payment with: ${method}`);
+    // Here you would integrate with a payment gateway.
+    // For this dummy implementation, we'll just log and close the modal.
+    this.showPaymentModal = false;
+    this.myCartService.clearCart(); // Clear cart after dummy checkout
+    this.toastService.show('Payment Successful!', 'success'); // Assuming success for dummy
+  }
+
+  closePaymentModal(){
+    this.showPaymentModal = false;
   }
 }

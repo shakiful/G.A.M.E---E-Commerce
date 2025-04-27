@@ -1,30 +1,38 @@
 <div class="container mx-auto px-4 py-8">
   <h1 class="text-3xl font-bold text-center mb-8">My Cart</h1>
 
-  <div *ngIf="cartList && cartList.length > 0; else emptyCart" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-    <!-- Loop through cart items and display them using a card structure similar to game-item -->
-    <div *ngFor="let item of cartList" class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full">
-      <img class="w-full h-48 object-cover" [src]="item.image_url" [alt]="item.name">
-      <div class="p-4 flex flex-col flex-grow">
-        <h3 class="text-lg font-semibold mb-2 truncate" title="{{item.name}}">{{ item.name }}</h3>
-        <p class="text-gray-600 text-sm mb-2">{{ item.genre }}</p>
-        <p class="text-gray-800 font-bold mb-2">{{ item.price | currency }}</p>
-        <p class="text-sm mb-4">
-          Rating: 
-          <span *ngIf="item.rating > 0" class="font-medium">{{ item.rating }}/5</span>
-          <span *ngIf="item.rating <= 0 || !item.rating" class="text-gray-500">Not Rated</span>
-        </p>
-        
-        <div class="mt-auto">
-          <button 
-            (click)="removeFromCart(item)" 
-            class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">
-            Remove from Cart
-          </button>
-          <!-- Add other actions like 'Proceed to Purchase' if needed -->
+  <div *ngIf="cartList && cartList.length > 0; else emptyCart">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <!-- Loop through cart items and display them using a card structure similar to game-item -->
+      <div *ngFor="let item of cartList" class="bg-white rounded-lg shadow-md overflow-hidden flex flex-col h-full">
+        <img class="w-full h-48 object-cover" [src]="item.image_url" [alt]="item.name">
+        <div class="p-4 flex flex-col flex-grow">
+          <h3 class="text-lg font-semibold mb-2 truncate" title="{{item.name}}">{{ item.name }}</h3>
+          <p class="text-gray-600 text-sm mb-2">{{ item.genre }}</p>
+          <p class="text-gray-800 font-bold mb-2">{{ item.price | currency }}</p>
+          <p class="text-sm mb-4">
+            Rating:
+            <span *ngIf="item.rating > 0" class="font-medium">{{ item.rating }}/5</span>
+            <span *ngIf="item.rating <= 0 || !item.rating" class="text-gray-500">Not Rated</span>
+          </p>
+
+          <div class="mt-auto">
+            <button
+              (click)="removeFromCart(item)"
+              class="w-full bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-150 ease-in-out">
+              Remove from Cart
+            </button>
+            <!-- Add other actions like 'Proceed to Purchase' if needed -->
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Checkout Button -->
+    <div class="mt-8 text-center">
+        <button (click)="checkout()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300">Proceed to Checkout</button>
+    </div>
+
   </div>
 
   <ng-template #emptyCart>
@@ -39,9 +47,23 @@
   </ng-template>
 
   <!-- Confirmation Modal -->
-  <app-confirmation-modal 
-    *ngIf="showConfirmationModal" 
+  <app-confirmation-modal
+    *ngIf="showConfirmationModal"
     [message]="'Are you sure you want to remove ' + (gameToRemove ? gameToRemove.name : '') + ' from the cart?'"
     (confirmed)="onConfirmRemove($event)">
   </app-confirmation-modal>
+
+  <!-- Payment Modal (Dummy) -->
+  <div *ngIf="showPaymentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+      <h3 class="text-lg font-bold mb-4">Dummy Payment Options</h3>
+      <p class="text-gray-700 mb-4">This is a dummy payment simulation. In a real application, you would integrate with a payment gateway here.</p>
+      <div class="space-y-4">
+        <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" (click)="processDummyPayment('Credit Card')">Pay with Dummy Credit Card</button>
+        <button class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded" (click)="processDummyPayment('PayPal')">Pay with Dummy PayPal</button>
+        <button class="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded" (click)="closePaymentModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
 </div>

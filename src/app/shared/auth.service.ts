@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SupabaseClient, createClient } from '@supabase/supabase-js';
+import { SupabaseClient, createClient, User } from '@supabase/supabase-js';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
 })
 export class AuthService {
   private supabase: SupabaseClient;
-  private authStateSubject = new BehaviorSubject<any>(null);
+  private authStateSubject = new BehaviorSubject<User | null>(null);
   authState$ = this.authStateSubject.asObservable();
 
   constructor() {
@@ -67,5 +67,10 @@ export class AuthService {
       console.error(error);
       throw error;
     }
+  }
+
+  async isAuthenticatedUser(): Promise<User | null> {
+    const { data: { user } } = await this.supabase.auth.getUser();
+    return user;
   }
 }
