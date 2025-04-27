@@ -30,7 +30,7 @@
 
     <!-- Checkout Button -->
     <div class="mt-8 text-center">
-        <button (click)="checkout()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300">Proceed to Checkout</button>
+      <button (click)="checkout()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300">Proceed to Checkout</button>
     </div>
 
   </div>
@@ -53,15 +53,62 @@
     (confirmed)="onConfirmRemove($event)">
   </app-confirmation-modal>
 
-  <!-- Payment Modal (Dummy) -->
+  <!-- Payment Modal -->
   <div *ngIf="showPaymentModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
     <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-      <h3 class="text-lg font-bold mb-4">Dummy Payment Options</h3>
-      <p class="text-gray-700 mb-4">This is a dummy payment simulation. In a real application, you would integrate with a payment gateway here.</p>
-      <div class="space-y-4">
-        <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" (click)="processDummyPayment('Credit Card')">Pay with Dummy Credit Card</button>
-        <button class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded" (click)="processDummyPayment('PayPal')">Pay with Dummy PayPal</button>
-        <button class="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded" (click)="closePaymentModal()">Cancel</button>
+      <h3 class="text-lg font-bold mb-4">Payment Options</h3>
+
+      <div *ngIf="!showCreditCardForm && !showPayPalForm" class="space-y-4">
+        <button class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" (click)="selectedPaymentMethod = 'Credit Card'; showCreditCardForm = true">Pay with Credit Card</button>
+        <button class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded" (click)="selectedPaymentMethod = 'PayPal'; showPayPalForm = true">Pay with PayPal</button>
+        <button class="w-full bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded" (click)="showPaymentModal = false">Cancel</button>
+      </div>
+
+      <div *ngIf="showCreditCardForm">
+        <h4 class="text-md font-semibold mb-2">Credit Card Details</h4>
+        <form (ngSubmit)="processCreditCardPayment()" class="space-y-4">
+          <div>
+            <label for="cardNumber" class="block text-gray-700 text-sm font-bold mb-2">Card Number</label>
+            <input type="text" id="cardNumber" name="cardNumber" [(ngModel)]="creditCard.cardNumber" #cardNumberInput="ngModel" required pattern="[0-9]{16}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter card number">
+            <div *ngIf="cardNumberInput.invalid && (cardNumberInput.dirty || cardNumberInput.touched)" class="text-red-500 text-xs italic">Please enter a valid 16-digit card number.</div>
+          </div>
+          <div>
+            <label for="expiryDate" class="block text-gray-700 text-sm font-bold mb-2">Expiry Date</label>
+            <input type="text" id="expiryDate" name="expiryDate" [(ngModel)]="creditCard.expiryDate" #expiryDateInput="ngModel" required pattern="(0[1-9]|1[0-2])/[0-9]{2}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="MM/YY">
+            <div *ngIf="expiryDateInput.invalid && (expiryDateInput.dirty || expiryDateInput.touched)" class="text-red-500 text-xs italic">Please enter a valid expiry date (MM/YY).</div>
+          </div>
+          <div>
+            <label for="cvv" class="block text-gray-700 text-sm font-bold mb-2">CVV</label>
+            <input type="text" id="cvv" name="cvv" [(ngModel)]="creditCard.cvv" #cvvInput="ngModel" required pattern="[0-9]{3,4}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="CVV">
+            <div *ngIf="cvvInput.invalid && (cvvInput.dirty || cvvInput.touched)" class="text-red-500 text-xs italic">Please enter a valid 3 or 4-digit CVV.</div>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <button [disabled]="cardNumberInput.invalid || expiryDateInput.invalid || cvvInput.invalid" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Pay with Credit Card</button>
+            <button class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" (click)="showCreditCardForm = false">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <div *ngIf="showPayPalForm">
+        <h4 class="text-md font-semibold mb-2">Pay with PayPal</h4>
+        <form (ngSubmit)="processPayPalPayment()" class="space-y-4">
+          <div>
+            <label for="paypalEmail" class="block text-gray-700 text-sm font-bold mb-2">PayPal Email</label>
+            <input type="email" id="paypalEmail" name="paypalEmail" [(ngModel)]="paypalEmail" #paypalEmailInput="ngModel" required email class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter PayPal email">
+            <div *ngIf="paypalEmailInput.invalid && (paypalEmailInput.dirty || paypalEmailInput.touched)" class="text-red-500 text-xs italic">Please enter a valid email address.</div>
+          </div>
+          <div>
+            <label for="paypalPassword" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+            <input type="password" id="paypalPassword" name="paypalPassword" [(ngModel)]="paypalPassword" #paypalPasswordInput="ngModel" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="Enter password">
+            <div *ngIf="paypalPasswordInput.invalid && (paypalPasswordInput.dirty || paypalPasswordInput.touched)" class="text-red-500 text-xs italic">Password is required.</div>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <button [disabled]="paypalEmailInput.invalid || paypalPasswordInput.invalid" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Pay with PayPal</button>
+            <button class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" (click)="showPayPalForm = false">Cancel</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>

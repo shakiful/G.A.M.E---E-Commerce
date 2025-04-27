@@ -16,7 +16,17 @@ export class MyCartComponent implements OnInit, OnDestroy {
   private cartSubscription: Subscription | undefined;
   showConfirmationModal = false;
   showPaymentModal = false;
+  showCreditCardForm = false;
+  showPayPalForm = false;
   gameToRemove: Games | null = null;
+  selectedPaymentMethod: string | null = null;
+  creditCard = {
+    cardNumber: '',
+    expiryDate: '',
+    cvv: ''
+  };
+  paypalEmail = '';
+  paypalPassword = '';
 
   constructor(private myCartService: MyCartService, private authService: AuthService, private router: Router, private route: ActivatedRoute, private toastService: ToastService) {}
 
@@ -56,7 +66,7 @@ export class MyCartComponent implements OnInit, OnDestroy {
   async checkout(){
     const user = await this.authService.isAuthenticatedUser();
     if(user){
-      // User is logged in, show dummy payment options
+      // User is logged in, show payment options
       this.showPaymentModal = true;
     } else {
       // User is not logged in, redirect to login page with returnUrl
@@ -64,16 +74,68 @@ export class MyCartComponent implements OnInit, OnDestroy {
     }
   }
 
-  processDummyPayment(method: string){
-    console.log(`Processing dummy payment with: ${method}`);
-    // Here you would integrate with a payment gateway.
-    // For this dummy implementation, we'll just log and close the modal.
+  processCreditCardPayment() {
+    // Simulate credit card processing
+    if (!this.validateCreditCard()) {
+      return;
+    }
+
+    console.log(`Processing credit card payment with card number: ${this.creditCard.cardNumber}`);
     this.showPaymentModal = false;
-    this.myCartService.clearCart(); // Clear cart after dummy checkout
-    this.toastService.show('Payment Successful!', 'success'); // Assuming success for dummy
+    this.showCreditCardForm = false;
+    this.myCartService.clearCart();
+    this.toastService.show('Payment Successful!', 'success');
+    // Reset credit card info
+    this.creditCard = {
+      cardNumber: '',
+      expiryDate: '',
+      cvv: ''
+    };
   }
 
-  closePaymentModal(){
+  processPayPalPayment() {
+    // Simulate PayPal authorization
+    if (!this.validatePayPal()) {
+      return;
+    }
+    console.log('Simulating PayPal authorization...');
     this.showPaymentModal = false;
+    this.showCreditCardForm = false; // Ensure credit card form is closed
+    this.showPayPalForm = false;
+    this.myCartService.clearCart();
+    this.toastService.show('Payment Successful (via PayPal)!', 'success');
+  }
+
+  validateCreditCard(): boolean {
+    // Add more robust validation logic here if desired
+    if (!/^[0-9]{16}$/.test(this.creditCard.cardNumber)) {
+      this.toastService.show('Invalid card number.', 'error');
+      return false;
+    }
+    if (!/^(0[1-9]|1[0-2])\/[0-9]{2}$/.test(this.creditCard.expiryDate)) {
+      this.toastService.show('Invalid expiry date.', 'error');
+      return false;
+    }
+    if (!/^[0-9]{3,4}$/.test(this.creditCard.cvv)) {
+      this.toastService.show('Invalid CVV.', 'error');
+      return false;
+    }
+    return true;
+  }
+
+  validatePayPal(): boolean {
+    if (!this.paypalEmail) {
+      this.toastService.show('PayPal email is required.', 'error');
+      return false;
+    }
+    if (!this.paypalPassword) {
+      this.toastService.show('PayPal password is required.', 'error');
+      return false;
+    }
+    return true;
+  }
+
+  //Keeps the selected payment, either credit card or paypal
+  processDummyPayment(method: string) {
   }
 }
