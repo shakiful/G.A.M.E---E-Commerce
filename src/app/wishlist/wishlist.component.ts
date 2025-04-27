@@ -20,8 +20,8 @@ export class WishlistComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
   ngOnInit(): void {
-    this.wishList = this.wishListService.getWishlist();
-    this.subscription = this.wishListService.wishlistChanged.subscribe(
+    this.wishList = this.wishListService.getWishList();
+    this.subscription = this.wishListService.wishlistChanged$.subscribe(
       (wishlist: Games[]) => {
         this.wishList = wishlist;
       }

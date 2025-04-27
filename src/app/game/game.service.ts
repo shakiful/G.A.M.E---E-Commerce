@@ -29,7 +29,8 @@ export class GameService {
       game.genre,
       game.image_url,
       game.description,
-      game.rating
+      game.rating,
+      game.id // ADD THE ID HERE
     ));
     this.gamesChanged.next(this.games.slice());
   }

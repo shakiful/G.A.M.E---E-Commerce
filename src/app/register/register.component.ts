@@ -26,13 +26,4 @@ export class RegisterComponent {
             this.error = e.message;
         }
     }
-
-    async googleSignUp() {
-        try {
-            await this.authService.googleSignUp();
-            this.router.navigate(['/']);
-        } catch (error) {
-            this.error = error.message;
-        }
-    }
 }

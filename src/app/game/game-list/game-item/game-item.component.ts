@@ -26,7 +26,7 @@ export class GameItemComponent implements OnInit {
   ) {}
 
   onWishlist() {
-    this.wishlistService.addToWishlist(this.game);
+    this.wishlistService.addToWishList(this.game);
     // this.router.navigate(['/wishlist']);
   }
 

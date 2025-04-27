@@ -5,7 +5,8 @@ export class Games {
     public genre: string,
     public image_url: string,
     public description: string,
-    public rating: number
+    public rating: number,
+    public id?: number // Add an optional 'id' property
   ) {
     this.name = name;
     this.price = price;
@@ -13,5 +14,6 @@ export class Games {
     this.image_url = image_url;
     this.description = description;
     this.rating = rating;
+    this.id = id;
   }
 }

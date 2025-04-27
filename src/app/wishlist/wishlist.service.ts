@@ -1,27 +1,93 @@
-import { Injectable, OnInit } from '@angular/core';
-import { Games } from '../shared/game-info.model';
+import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { GameService } from '../game/game.service';
-import { Router } from '@angular/router';
+import { Games } from '../shared/game-info.model';
+import { ToastService } from '../shared/toast.service';
+import { SupabaseService } from '../shared/supabase.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class WishListService {
-  private wishlist: Games[] = [];
-  wishlistChanged = new Subject<Games[]>();
-  constructor(private gameService: GameService, private router: Router) {}
+  private wishList: Games[] = [];
+  listedWish = new Subject<Games[]>();
+  private wishlistChanged = new Subject<Games[]>();
+  wishlistChanged$ = this.wishlistChanged.asObservable();
 
-  addToWishlist(game: Games) {
-    const exists = this.wishlist.includes(game);
-    if (exists) {
-      alert('Item already exists in Wishlist');
+  constructor(private toastService: ToastService, private supabaseService: SupabaseService) {}
+
+  async addToWishList(game: Games) {
+    const supabase = this.supabaseService.getClient();
+    const user = this.supabaseService.getClient();
+
+    if (!user) {
+      this.toastService.show('Please Login to add to wishlist', 'error');
+      return;
+    }
+
+    const exists = this.wishList.some(g => g.name === game.name);
+    if (!exists) {
+      try {
+        const { data, error } = await supabase
+          .from('wishlist_items')
+          .insert([{
+            // user_id: user.id,
+            game_id: game.id,
+          }]);
+
+        if (error) {
+          console.error('Error adding to wishlist:', error);
+          this.toastService.show('Error adding to wishlist', 'error');
+          return;
+        }
+
+        this.toastService.show('Game Added to Wishlist', 'success');
+        this.wishList.push(game);
+        this.listedWish.next(this.wishList.slice());
+        this.wishlistChanged.next(this.wishList.slice());
+      } catch (e) {
+        console.error(e);
+      }
     } else {
-      alert('Game Added to Wishlist');
-      this.wishlist.push(game);
-      this.wishlistChanged.next(this.wishlist.slice());
+      this.toastService.show('Game already in wishlist', 'info');
     }
   }
 
-  getWishlist() {
-    return this.wishlist.slice();
+  async removeWishList(gameToRemove: Games) {
+    const supabase = this.supabaseService.getClient();
+    const user = this.supabaseService.getClient().auth.getUser();
+
+    if (!user) {
+      this.toastService.show('Please Login to remove from wishlist', 'error');
+      return;
+    }
+
+    try {
+      const { data, error } = await supabase
+        .from('wishlist_items')
+        .delete()
+        .match({ 
+          // user_id: user.id,
+           game_id: gameToRemove.id });
+
+      if (error) {
+        console.error('Error removing from wishlist:', error);
+        this.toastService.show('Error removing from wishlist', 'error');
+        return;
+      }
+
+      const initialLength = this.wishList.length;
+      this.wishList = this.wishList.filter(game => game.name !== gameToRemove.name);
+      if (this.wishList.length < initialLength) {
+        this.listedWish.next(this.wishList.slice());
+        this.wishlistChanged.next(this.wishList.slice());
+        this.toastService.show('Game removed from wishlist', 'success');
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  getWishList() {
+    return this.wishList.slice();
   }
 }

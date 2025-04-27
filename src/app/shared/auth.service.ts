@@ -1,26 +1,41 @@
 import { Injectable } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, user, GoogleAuthProvider, signInWithPopup, updateProfile } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
+import { SupabaseClient, createClient } from '@supabase/supabase-js';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  authState$: Observable<any>;
+  private supabase: SupabaseClient;
+  private authStateSubject = new BehaviorSubject<any>(null);
+  authState$ = this.authStateSubject.asObservable();
 
-  constructor(private auth: Auth) {
-    this.authState$ = user(this.auth);
+  constructor() {
+    this.supabase = createClient(
+      environment.supabaseUrl,
+      environment.supabaseKey
+    );
+    this.supabase.auth.getSession().then(({ data: { session } }) => {
+      this.authStateSubject.next(session?.user || null);
+    });
+
+    this.supabase.auth.onAuthStateChange((event, session) => {
+      this.authStateSubject.next(session?.user || null);
+    });
   }
 
   async register(email: string, password: string) {
     try {
-      const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
-      // Extract username from email
-      const username = email.substring(0, email.indexOf('@'));
-      // Update the user's profile with the username
-      await updateProfile(userCredential.user, { displayName: username });
-      return userCredential;
-    } catch (error) {
+      const { data, error } = await this.supabase.auth.signUp({
+        email,
+        password,
+      });
+      if (error) {
+        throw error;
+      }
+      return data.user;
+    } catch (error: any) {
       console.error(error);
       throw error;
     }
@@ -28,50 +43,29 @@ export class AuthService {
 
   async login(email: string, password: string) {
     try {
-      const userCredential = await signInWithEmailAndPassword(this.auth, email, password);
-            // Extract username from email
-      const username = email.substring(0, email.indexOf('@'));
-      // Update the user's profile with the username
-      await updateProfile(userCredential.user, { displayName: username });
-      return userCredential;
-    } catch (error) {
+      const { data, error } = await this.supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (error) {
+        throw error;
+      }
+      return data.user;
+    } catch (error: any) {
       console.error(error);
       throw error;
     }
   }
 
   async logout() {
-    await signOut(this.auth);
-  }
-
-  async googleSignIn() {
-    const provider = new GoogleAuthProvider();
     try {
-      const result = await signInWithPopup(this.auth, provider);
-      return result;
-    } catch (error) {
+      const { error } = await this.supabase.auth.signOut();
+      if (error) {
+        throw error;
+      }
+    } catch (error: any) {
       console.error(error);
       throw error;
-    }
-  }
-
-  async googleSignUp() {
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(this.auth, provider);
-      return result;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  }
-
-  getUsername() {
-    const user = this.auth.currentUser;
-    if (user) {
-      return user.displayName || user.email?.split('@')[0] || 'User';
-    } else {
-      return null;
     }
   }
 }

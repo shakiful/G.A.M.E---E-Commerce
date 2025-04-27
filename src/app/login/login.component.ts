@@ -26,13 +26,4 @@ export class LoginComponent {
       this.error = e.message;
     }
   }
-
-  async googleSignIn() {
-    try {
-      await this.authService.googleSignIn();
-      this.router.navigate(['/']);
-    } catch (error) {
-      this.error = error.message;
-    }
-  }
 }
