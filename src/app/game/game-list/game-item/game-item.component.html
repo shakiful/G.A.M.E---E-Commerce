@@ -1,33 +1,59 @@
-<div class="border rounded-lg shadow-sm bg-white p-4 relative h-full flex flex-col">
-  <div class="absolute top-4 left-4 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center font-semibold text-gray-700">
+<div
+  class="border rounded-lg shadow-sm bg-white p-4 relative h-full flex flex-col"
+>
+  <div
+    class="absolute top-4 left-4 w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center font-semibold text-gray-700"
+  >
     {{ index + 1 }}
   </div>
 
   <div class="flex flex-col items-center flex-grow">
     <div class="mb-4 h-32 w-full flex justify-center">
-      <img [src]="game.image_url" alt="{{ game.name }}" class="h-42 object-contain" />
+      <img
+        [src]="game.image_url"
+        alt="{{ game.name }}"
+        class="h-42 object-contain"
+      />
     </div>
 
     <div class="w-full text-center mb-3">
-      <h3 class="font-bold text-gray-800 text-2xl line-clamp-2 h-12 flex items-center justify-center">{{ game.name }}</h3>
+      <h3
+        class="font-bold text-gray-800 text-2xl line-clamp-2 h-12 flex items-center justify-center"
+      >
+        {{ game.name }}
+      </h3>
       <p class="text-gray-600 text-sm">{{ game.genre }}</p>
     </div>
 
     <div class="flex justify-between w-full mb-4">
       <span class="font-medium">{{ game.price | currency }}</span>
       <span *ngIf="game.rating > 0" class="font-medium">{{ game.rating }}</span>
-      <span *ngIf="game.rating == 0" class="text-gray-500 text-sm">No Rating Yet</span>
+      <span *ngIf="game.rating == 0" class="text-gray-500 text-sm"
+        >No Rating Yet</span
+      >
     </div>
 
     <div class="grid grid-cols-1 gap-2 w-full mt-auto">
-      <div *ngIf="isOwned" class="py-2 px-1 bg-gray-400 text-white text-xs font-medium rounded text-center">Owned</div>
-      <button *ngIf="!isOwned" (click)="onCart($event)" class="py-2 px-1 bg-blue-500 text-white text-xs font-medium rounded hover:bg-blue-600 transition-colors cursor-pointer">
+      <div
+        *ngIf="isOwned"
+        class="py-2 px-1 bg-gray-400 text-white text-xs font-medium rounded text-center"
+      >
+        Owned
+      </div>
+      <button
+        *ngIf="!isOwned"
+        (click)="onCart($event)"
+        class="py-2 px-1 bg-blue-500 text-white text-xs font-medium rounded hover:bg-blue-600 transition-colors cursor-pointer"
+      >
         Add To Cart
       </button>
-      <a  *ngIf="!isOwned" [routerLink]="[index]"
-        class="py-2 px-1 bg-green-500 text-white text-xs font-medium rounded hover:bg-green-600 transition-colors text-center">
+      <button
+        *ngIf="!isOwned"
+        (click)="showDetailsModal($event)"
+        class="py-2 px-1 bg-green-500 text-white text-xs font-medium rounded hover:bg-green-600 transition-colors text-center cursor-pointer"
+      >
         Details
-      </a>
+      </button>
     </div>
   </div>
 </div>

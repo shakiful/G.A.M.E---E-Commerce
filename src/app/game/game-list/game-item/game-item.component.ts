@@ -4,6 +4,7 @@ import { Games } from 'src/app/shared/game-info.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/auth.service';
 import { SupabaseService } from 'src/app/shared/supabase.service';
+import { ModalService } from 'src/app/shared/modal.service';
 
 @Injectable()
 @Component({
@@ -22,12 +23,14 @@ export class GameItemComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private supabaseService: SupabaseService
+    private supabaseService: SupabaseService,
+    private modalService: ModalService
   ) {}
 
   async ngOnInit(): Promise<void> {
     const user = await this.authService.isAuthenticatedUser();
-    if (user && this.game?.id) { // Also check if game.id exists
+    if (user && this.game?.id) {
+      // Also check if game.id exists
       this.isLoadingOwnership = true; // <-- Start loading
       try {
         const supabase = this.supabaseService.getClient();
@@ -39,14 +42,20 @@ export class GameItemComponent implements OnInit {
           .eq('game_id', this.game.id);
 
         if (error) {
-          console.error(`Error checking ownership for game ${this.game.id}:`, error.message);
+          console.error(
+            `Error checking ownership for game ${this.game.id}:`,
+            error.message
+          );
           this.isOwned = false; // Assume not owned on error
         } else {
           // If count > 0, the user owns the game
           this.isOwned = (count ?? 0) > 0;
         }
       } catch (error) {
-        console.error(`Exception checking ownership for game ${this.game.id}:`, error);
+        console.error(
+          `Exception checking ownership for game ${this.game.id}:`,
+          error
+        );
         this.isOwned = false; // Assume not owned on exception
       } finally {
         this.isLoadingOwnership = false; // <-- Stop loading regardless of outcome
@@ -62,7 +71,9 @@ export class GameItemComponent implements OnInit {
     event.stopPropagation(); // Prevent potential parent clicks
     this.myCartService.addToCart(this.game);
   }
-  goToDetailsPage(){
-    this.router.navigate([this.index], {relativeTo: this.route});
+  // --- Method to open the details modal ---
+  showDetailsModal(event: Event) {
+    event.stopPropagation(); // Prevent card click if necessary
+    this.modalService.openModal(this.game); // Use the service to open
   }
 }

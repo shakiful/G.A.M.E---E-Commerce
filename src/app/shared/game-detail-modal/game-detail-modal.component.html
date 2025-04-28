@@ -1,0 +1,61 @@
+<div
+  *ngIf="isModalOpen$ | async"
+  (click)="close()"
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60 transition-opacity duration-300 ease-in-out"
+>
+  <div
+    *ngIf="selectedGame$ | async as game"
+    (click)="onContentClick($event)"
+    class="relative w-full max-w-5xl transform rounded-lg bg-white p-8 shadow-xl transition-all duration-300 ease-in-out sm:my-8 overflow-y-auto max-h-[90vh]"
+  >
+    <button
+      (click)="close()"
+      class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 focus:outline-none"
+    >
+      <svg
+        class="h-6 w-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"
+        ></path>
+      </svg>
+    </button>
+
+    <div class="text-center">
+      <img
+        style="max-height: 300px; max-width: 100%"
+        [src]="game.image_url"
+        [alt]="game.name"
+        class="mx-auto mb-4 h-auto w-auto object-contain"
+      />
+      <h3 class="mb-2 text-2xl font-semibold text-gray-900">{{ game.name }}</h3>
+      <p class="mb-1 text-sm text-gray-500">{{ game.genre }}</p>
+      <p class="mb-4 text-base text-gray-700">{{ game.description }}</p>
+
+      <div class="mt-4 flex justify-center space-x-4 border-t pt-4">
+        <span
+          *ngIf="game.price !== undefined"
+          class="text-lg font-medium text-gray-800"
+          >{{ game.price | currency }}</span
+        >
+        <span
+          *ngIf="game.rating !== undefined && game.rating > 0"
+          class="text-lg font-medium text-yellow-500"
+          >{{ game.rating }} ★</span
+        >
+        <span
+          *ngIf="game.rating !== undefined && game.rating === 0"
+          class="text-sm text-gray-500"
+          >No Rating Yet</span
+        >
+      </div>
+    </div>
+  </div>
+</div>

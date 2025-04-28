@@ -12,15 +12,13 @@ import { DropdownDirectiveDirective } from './shared/dropdown-directive.directiv
 import { GameService } from './game/game.service';
 import { ToastComponent } from './shared/toast.component';
 import { ConfirmationModalComponent } from './shared/confirmation-modal.component';
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
-import { environment } from '../environments/environment';
-import { provideAuth,getAuth } from '@angular/fire/auth';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { FormsModule } from '@angular/forms';
 import { PaymentHistoryComponent } from './payment-history/payment-history.component';
 import { LibraryComponent } from './library/library.component';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { GameDetailModalComponent } from './shared/game-detail-modal/game-detail-modal.component'; // Adjust the path if necessary
 
 @NgModule({
   declarations: [
@@ -38,7 +36,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
     RegisterComponent,
     PaymentHistoryComponent,
     LibraryComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    GameDetailModalComponent
   ],
   imports: [
     BrowserModule,
