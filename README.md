@@ -1,6 +1,6 @@
 # G.A.M.E- E-commerce
 
-This is a website which allows users to buy and sell their digital game codes with others for less after buying it from the website store and using it for 5months. The seller can only sell the game codes once after buying the game.
+This is a website which allows users to buy digital game with other platforms for less. This is a wonderful way to get your favourite games after their release and get them for less than the market price.
 
 Features:
 1. Add to Cart functionality
@@ -19,7 +19,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 ## Live Demo
 
-The Project is also Live on [G.A.M.E](https://tourmaline-moxie-d830bc.netlify.app/shop) for anyone who wants to get a feel of what the website is about.
+The Project is also Live on [G.A.M.E](https://tourmaline-moxie-d830bc.netlify.app) for anyone who wants to get a feel of what the website is about.
 
 ## Code scaffolding
 
