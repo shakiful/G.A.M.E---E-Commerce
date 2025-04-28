@@ -3,13 +3,12 @@
 This is a website which allows users to buy and sell their digital game codes with others for less after buying it from the website store and using it for 5months. The seller can only sell the game codes once after buying the game.
 
 Features:
-1. Add to Wishlist functionality
-2. Add to Cart functionality
-3. Detail button to know more about the product
-4. Cancelled Orders List
-5. Purchased History List
-6. Enlist game code for sell
-7. Able to buy other's game code
+1. Add to Cart functionality
+2. Detail button to know more about the product
+3. Cancelled Orders List
+4. Purchased History List
+5. Library To see owned games
+6. Payment Gateway (credit card, paypal)
 
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.3.
@@ -17,6 +16,10 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+
+## Live Demo
+
+The Project is also Live on [G.A.M.E](https://tourmaline-moxie-d830bc.netlify.app/shop) for anyone who wants to get a feel of what the website is about.
 
 ## Code scaffolding
 
