@@ -40,6 +40,7 @@
                 <!-- Login/Logout Buttons -->
                 <li *ngIf="!isAuthenticated">
                     <a routerLink="/login" class="block md:inline-block py-2 px-4 text-gray-300 hover:text-white">Login</a>
+                    <span class="text-gray-500 ml-2">Logged in as guest</span>
                 </li>
                  <!-- User Name -->
                  <li *ngIf="isAuthenticated" class="text-gray-300">{{username}}</li>
