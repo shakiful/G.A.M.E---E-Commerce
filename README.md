@@ -19,7 +19,7 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 ## Live Demo
 
-The Project is also Live on [G.A.M.E](https://tourmaline-moxie-d830bc.netlify.app) for anyone who wants to get a feel of what the website is about.
+The Project is also Live on [G.A.M.E](https://game-mart.netlify.app/shop) for anyone who wants to get a feel of what the website is about.
 
 ## Code scaffolding
 
